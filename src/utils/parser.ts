@@ -10,6 +10,7 @@ function parseWordroot(raw: string) {
   return Object.values(parsed).map((e) => ({
     ...e,
     synonyms: e.synonyms?.split(/, */g),
+    antonyms: e.antonyms?.split(/, */g),
     root: e.root?.split(/, */g),
   }));
 }

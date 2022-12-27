@@ -1,11 +1,13 @@
 declare namespace ECDict {
   interface WordRoot {
-    synonyms: string[];
+    synonyms?: string[];
+    antonyms?: string[];
     class: string;
     example: string[];
     meaning: string;
     root: string[];
     origin: string;
+    function: string;
   }
 
   interface Lemma {

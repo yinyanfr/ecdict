@@ -21,16 +21,23 @@ const mostFreq = lemma.reduce(
   (a, b) => ({ frequency: Math.max(a.frequency, b.frequency) } as any)
 ).frequency;
 function getLevel(frequency: number) {
-  return Math.floor((frequency / mostFreq) * 10);
+  return Math.ceil((frequency / mostFreq) * 10);
 }
 
-export function findLemma(word: string) {
-  const result = lemma.find(
-    (e) => e.word === word || e.variations.includes(word)
-  );
+export function findLemma(word: string, caseInsensitive?: boolean) {
+  if (!word.length) return null;
+
+  const result = caseInsensitive
+    ? lemma.find(
+        (e) =>
+          e.word.toLowerCase() === word.toLowerCase() ||
+          e.variations.find((e) => e.toLowerCase() === word.toLowerCase())
+      )
+    : lemma.find((e) => e.word === word || e.variations.includes(word));
   if (result) {
     return {
       word: result.word,
+      frequency: result.frequency,
       level: getLevel(result.frequency),
     };
   }
@@ -40,13 +47,20 @@ export function findLemma(word: string) {
 interface SearchOptions {
   withResemble?: boolean;
   withRoot?: boolean;
+  caseInsensitive?: boolean;
 }
 
 export function searchWord(entry: string, options?: SearchOptions) {
-  const { withResemble, withRoot } = options || {};
-  const hasLemma = findLemma(entry);
+  if (!entry?.length) return null;
+
+  const { withResemble, withRoot, caseInsensitive } = options || {};
+  const hasLemma = findLemma(entry, caseInsensitive);
   const lemma = hasLemma?.word || entry;
-  const word = dict.find((e) => e.word === lemma);
+  const level = hasLemma?.level;
+  const frequency = hasLemma?.frequency;
+  const word = caseInsensitive
+    ? dict.find((e) => e.word.toLowerCase() === lemma.toLowerCase())
+    : dict.find((e) => e.word === lemma);
   if (word) {
     const additional: Record<string, unknown> = {};
     if (withResemble) {
@@ -61,6 +75,8 @@ export function searchWord(entry: string, options?: SearchOptions) {
       ...word,
       entry,
       lemma,
+      level,
+      frequency,
       ...additional,
     };
   }
