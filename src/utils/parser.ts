@@ -6,7 +6,12 @@ const assetsPath = path.join(__dirname, "..", "..", "assets");
 const dataPath = path.join(__dirname, "..", "..", "data");
 
 function parseWordroot(raw: string) {
-  return JSON.parse(raw) as Record<string, ECDict.WordRoot>;
+  const parsed: Record<string, Record<string, string>> = JSON.parse(raw);
+  return Object.values(parsed).map((e) => ({
+    ...e,
+    synonyms: e.synonyms?.split(/, */g),
+    root: e.root?.split(/, */g),
+  }));
 }
 
 // have/1315648 -> had,has,'ve,having,'s,'d,d,ve
@@ -51,12 +56,12 @@ function parseResembleLine(line: string): ECDict.Resemble {
   const lines = line.split(/\n/g);
   const resemble: ECDict.Resemble = {
     dict: [],
-    synonymes: [],
+    synonyms: [],
     description: "",
   };
   lines.forEach((e) => {
     if (e.match(/^%/)) {
-      resemble.synonymes = e.replace(/[% ]+/g, "").split(",");
+      resemble.synonyms = e.replace(/[% ]+/g, "").split(",");
     } else if (e.match(/^- /)) {
       const match = e.match(/([A-z-']+): *(.+)/);
       if (match) {

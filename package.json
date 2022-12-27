@@ -1,6 +1,6 @@
 {
   "name": "ecdict",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "JavaScript interface for ECDICT",
   "main": "dist/ecdict.js",
   "scripts": {

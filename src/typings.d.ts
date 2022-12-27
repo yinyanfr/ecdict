@@ -1,10 +1,10 @@
 declare namespace ECDict {
   interface WordRoot {
-    synonyms: string;
+    synonyms: string[];
     class: string;
     example: string[];
     meaning: string;
-    root: string;
+    root: string[];
     origin: string;
   }
 
@@ -15,7 +15,7 @@ declare namespace ECDict {
   }
 
   interface Resemble {
-    synonymes: string[];
+    synonyms: string[];
     description: string;
     dict: {
       word: string;
