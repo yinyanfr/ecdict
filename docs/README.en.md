@@ -12,7 +12,7 @@ This library contains a large dataset (approx. 200M after installation).
 
 This library is not meant to be run in the browsers.
 
-## Table of Contents
+## :green_book: Table of Contents
 
 1. [Quick Start](#quick-start)
 2. [Search For A Word](#search-for-a-word)

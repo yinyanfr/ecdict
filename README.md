@@ -14,7 +14,13 @@ ECDict: JavaScript 免费的英汉词典数据集。
 
 [English Documentation](docs/README.en.md)
 
-## 目录
+[Online Demo](https://koto-noha.web.app/dict)
+
+## :framed_picture: Gallery
+
+![image-20221228171536669](./assets/example.png)
+
+## :green_book: 目录
 
 1. [开始使用](#开始使用)
 2. [查询单词](#查询单词)
