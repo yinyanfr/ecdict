@@ -59,18 +59,18 @@ export function searchWord(entry: string, options?: SearchOptions) {
   const level = hasLemma?.level;
   const frequency = hasLemma?.frequency;
   const word = caseInsensitive
-    ? dict.find((e) => e.word.toLowerCase() === lemma.toLowerCase())
+    ? dict.find((e) => e.word?.toLowerCase() === lemma.toLowerCase())
     : dict.find((e) => e.word === lemma);
+  const additional: Record<string, unknown> = {};
+  if (withResemble) {
+    const hasResemble = resemble.find((e) => e.synonyms.includes(lemma));
+    additional.resemble = hasResemble;
+  }
+  if (withRoot) {
+    const hasRoot = wordroot.find((e) => e.root?.includes(entry));
+    additional.root = hasRoot;
+  }
   if (word) {
-    const additional: Record<string, unknown> = {};
-    if (withResemble) {
-      const hasResemble = resemble.find((e) => e.synonyms.includes(lemma));
-      additional.resemble = hasResemble;
-    }
-    if (withRoot) {
-      const hasRoot = wordroot.find((e) => e.root?.includes(entry));
-      additional.root = hasRoot;
-    }
     return {
       ...word,
       entry,
@@ -80,5 +80,5 @@ export function searchWord(entry: string, options?: SearchOptions) {
       ...additional,
     };
   }
-  return null;
+  return additional;
 }

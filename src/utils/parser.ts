@@ -83,10 +83,18 @@ function parseResemble(raw: string): ECDict.Resemble[] {
 
 // TODO: Do you guys not having rams
 function parseDict(raw: string) {
-  return parse(raw, {
+  const parsed: ECDict.Dict[] = parse(raw, {
     columns: true,
     skip_empty_lines: true,
   });
+  parsed.forEach((word) => {
+    for (const key of Object.keys(word)) {
+      if (!word[key as keyof typeof word]?.length) {
+        word[key as keyof typeof word] = undefined;
+      }
+    }
+  });
+  return parsed;
 }
 
 function parser() {
